@@ -27,6 +27,12 @@ test/       Enhetstester (node --test)
 
 ## Bygga och köra
 
+Färdiga versioner finns under [Releases](https://github.com/Flaxx83/nexusordo/releases).
+Ladda ned ZIP-paketet, packa upp det och öppna `NexusOrdo.html` i Edge eller Chrome.
+
+GitHub Actions kör testerna och bygger appen vid varje push och pull request.
+Ett ZIP-paket med appen och licenserna finns som artefakten **NexusOrdo** i respektive lyckad körning.
+
 Kräver Node.js 20 eller senare.
 
 ```bash

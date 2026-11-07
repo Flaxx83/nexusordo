@@ -1,0 +1,36 @@
+name: Test and build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+      - name: Run tests
+        run: node --test "test/*.test.mjs"
+      - name: Build standalone app
+        run: node scripts/build-lokal.mjs
+      - name: Include licenses
+        run: |
+          cp LICENSE dist/LICENSE.txt
+          cp app/vendor/LICENSE-SheetJS.txt dist/LICENSE-SheetJS.txt
+          cp app/vendor/README.md dist/THIRD-PARTY.md
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: NexusOrdo
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
