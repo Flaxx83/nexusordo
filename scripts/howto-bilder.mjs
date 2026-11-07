@@ -20,7 +20,8 @@ let sharp = null; try { sharp = load('sharp'); } catch { /* bilderna sparas okom
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const APP = path.join(REPO, 'app'), EX = path.join(REPO, 'exempel');
 const BAS = ['Ny besöksreception (fiktiv).xlsx', 'Delprojekt IT – Besökssystem (fiktivt).xlsx', 'Delprojekt Utbildning (fiktivt).xlsx'].map(f => path.join(EX, 'bas', f));
-const W = 1280, H = 800;
+// Visa produktnamnet även i hjälpbilderna (döljs av appens responsiva layout vid <= 1680 px).
+const W = 1760, H = 1000;
 const args = process.argv.slice(2), opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
 const ONLY = opt('--bara') ? new Set(opt('--bara').split(',').map(x => x.trim())) : null;
 
