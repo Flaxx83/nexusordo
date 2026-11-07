@@ -58,6 +58,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 8px; margin-right: 6px; }
 .logo { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--ink); color: var(--ink-text); }
 .brand-name { font-weight: 650; font-size: 15px; letter-spacing: -.01em; }
+.update-notice { flex-shrink: 0; padding: 10px 16px; background: var(--panel); color: var(--text-primary); border-bottom: 1px solid var(--border); }
+.update-notice a { color: inherit; text-decoration: underline; }
 .plan-picker { position: relative; display: flex; align-items: center; gap: 2px; }
 #planSelect { appearance: none; border: 1px solid var(--border); background: var(--panel-2); border-radius: 8px; padding: 6px 28px 6px 10px; font-weight: 600; max-width: 280px; cursor: pointer;
   background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);

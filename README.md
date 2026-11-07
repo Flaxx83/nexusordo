@@ -27,6 +27,11 @@ test/       Enhetstester (node --test)
 
 ## Bygga och köra
 
+Appen kontrollerar senaste GitHub-releasen vid start när internet finns. Du kan också välja
+**? → Sök efter uppdateringar**. Bara versionsinformation hämtas; inga planer skickas.
+Utan internet fungerar planeringen som vanligt. Uppdateringar laddas ned manuellt – spara först dina planer till Excel.
+Versionsnumret för nästa release anges i `VERSION` före bygget.
+
 Färdiga versioner finns under [Releases](https://github.com/Flaxx83/nexusordo/releases).
 Ladda ned ZIP-paketet, packa upp det och öppna `NexusOrdo.html` i Edge eller Chrome.
 

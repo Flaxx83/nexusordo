@@ -34,7 +34,9 @@ script = script.replace(re, () => `/* HOWTO:START */\nconst HOWTO_IMG = ${JSON.s
 // Version = senaste commit, så att bygget går att upprepa; TP_BUILD (#78) = samma version med tid, för varningen om filer från en nyare NexusOrdo
 const info = buildInfo(fileURLToPath(repo).replace(/\/$/, ''));
 script = embedBuild(script, info);
-const local = { version: info.version, date: info.date, ...(theme ? { theme } : {}) };
+const release = readFileSync(new URL('VERSION', repo), 'utf8').trim();
+if (!/^\d+\.\d+\.\d+$/.test(release)) throw new Error('Ogiltig VERSION');
+const local = { version: info.version, date: info.date, release, ...(theme ? { theme } : {}) };
 
 const html = read('index.html').replace(/^.*data-embed="sheetjs".*\n/m, '');
 // Inbäddad kod får inte innehålla </script, <script eller <!-- (HTML-tolken avslutar eller byter läge); \x3C fungerar i strängar och regex

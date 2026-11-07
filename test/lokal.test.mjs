@@ -20,7 +20,7 @@ test('en fil: stil, SheetJS, version och appen inbäddade', () => {
   assert.equal((html.match(/<script>/g) || []).length, 3);
   assert.equal((html.match(/<\/script>/g) || []).length, 3, 'ingen </script> inne i den inbäddade koden');
   assert.ok(!/<!--[\s\S]*<script/.test(html.slice(html.indexOf('<script>'))), 'inget <!-- före <script i koden');
-  assert.match(html, /window\.TP_LOCAL = \{"version":"[^"]+","date":"[^"]*"\}/);
+  assert.match(html, /window\.TP_LOCAL = \{"version":"[^"]+","date":"[^"]*","release":"\d+\.\d+\.\d+"\}/);
   assert.ok(html.includes('SheetJS') && html.includes('XLSX'));
   assert.ok(html.includes('const TEMPLATE_LIB'), 'mallbiblioteket');
   assert.match(html, /const HOWTO_IMG = \{"sv":\{"01-start":"data:image\/(webp|png);base64,/);

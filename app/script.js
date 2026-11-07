@@ -80,6 +80,14 @@ const parseJSON = (s, fb) => { try { return s ? JSON.parse(s) : fb; } catch { re
    Nyckeln är den svenska texten; {n} i texten fylls i från andra argumentet. Saknas en översättning visas svenskan. */
 let LANG = LS.get('timeplan.lang') === 'en' ? 'en' : 'sv';
 const I18N_EN = {
+  "Sök efter uppdateringar": "Check for updates",
+  "En ny version finns: {v}": "A new version is available: {v}",
+  "Hämta senaste versionen": "Download the latest version",
+  "Du har den senaste versionen ({v}).": "You have the latest version ({v}).",
+  "Det här bygget är nyare än senaste releasen ({v}).": "This build is newer than the latest release ({v}).",
+  "Utvecklingsversion – senaste release är {v}.": "Development build – the latest release is {v}.",
+  "Kunde inte kontrollera versionen. Kontrollera internetanslutningen eller öppna releaserna på GitHub.": "Could not check for updates. Check your internet connection or open the releases on GitHub.",
+  "Spara dina planer till Excel innan du byter HTML-fil.": "Save your plans to Excel before replacing the HTML file.",
   // PMI-projektmallen
   'PMI: faser som känns igen får PMI-färgerna, övriga får Standard.': 'PMI: recognised phases get the PMI colours, the others get Standard.',
   'Huvudplanen har inga gater med datum ännu.': 'The main plan has no dated gates yet.',
@@ -9913,12 +9921,69 @@ function offerPageTour(page) {
 const offerPageTourSoon = page => setTimeout(() => offerPageTour(page), 500);
 
 // ?-knappen: rundturer, Nytt och hjälpcentret (med snabblänk till sidans artikel) (#101)
+/* UPDATE:START */
+const RELEASES_URL = 'https://github.com/Flaxx83/nexusordo/releases/latest';
+function releaseParts(value) {
+  const m = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(String(value || ''));
+  if (!m) return null;
+  const parts = m.slice(1).map(Number);
+  return parts.every(Number.isSafeInteger) ? parts : null;
+}
+function compareRelease(a, b) {
+  const x = releaseParts(a), y = releaseParts(b);
+  if (!x || !y) return null;
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i] ? 1 : -1;
+  return 0;
+}
+async function latestRelease() {
+  const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch('https://api.github.com/repos/Flaxx83/nexusordo/releases/latest', {
+      credentials: 'omit', referrerPolicy: 'no-referrer', cache: 'no-store', signal: controller.signal,
+      headers: { Accept: 'application/vnd.github+json' }
+    });
+    if (!response.ok) throw new Error('Release lookup failed');
+    const data = await response.json();
+    if (data.draft || data.prerelease || !releaseParts(data.tag_name)) throw new Error('Invalid release');
+    return data.tag_name;
+  } finally { clearTimeout(timer); }
+}
+let updateChecking = false;
+async function checkForUpdates(manual = false) {
+  if (updateChecking) return;
+  updateChecking = true;
+  let message, available = false;
+  try {
+    const latest = await latestRelease(), current = globalThis.TP_LOCAL?.release;
+    const cmp = compareRelease(latest, current);
+    available = cmp === 1;
+    message = available ? tr('En ny version finns: {v}', { v: latest })
+      : cmp === 0 ? tr('Du har den senaste versionen ({v}).', { v: current })
+      : cmp === -1 ? tr('Det här bygget är nyare än senaste releasen ({v}).', { v: latest })
+      : tr('Utvecklingsversion – senaste release är {v}.', { v: latest });
+  } catch {
+    message = tr('Kunde inte kontrollera versionen. Kontrollera internetanslutningen eller öppna releaserna på GitHub.');
+  } finally { updateChecking = false; }
+  if (manual) {
+    await dialog({ title: tr('Sök efter uppdateringar'),
+      body: `<p>${esc(message)}</p><p><a href="${RELEASES_URL}" target="_blank" rel="noopener noreferrer">${tr('Hämta senaste versionen')}</a></p><p>${tr('Spara dina planer till Excel innan du byter HTML-fil.')}</p>`,
+      buttons: [{ label: tr('Stäng'), value: true }] });
+  } else if (available) {
+    let notice = $('#updateNotice');
+    if (!notice) {
+      notice = document.createElement('div'); notice.id = 'updateNotice'; notice.className = 'update-notice';
+      notice.setAttribute('role', 'status'); $('.topbar').after(notice);
+    }
+    notice.innerHTML = `${esc(message)} · <a href="${RELEASES_URL}" target="_blank" rel="noopener noreferrer">${tr('Hämta senaste versionen')}</a>`;
+  }
+}
+/* UPDATE:END */
 function renderHelpMenu() {
   const today = fromDay(todayDay()), all = shownTours(), fresh = new Set(newTours(all, today).map(t => t.id)), page = currentPage();
   $('#helpBtn').classList.toggle('has-new', fresh.size > 0);
   const pt = page && all.find(t => t.id === page), hp = helpPageArticle();
   // Hjälpcentret och sidans artikel överst (#101) – Nytt-listan är lång och menyn rullar (max-height i CSS)
-  $('#helpMenu').innerHTML = `<button data-help="">📖 ${tr('Hjälpcenter')}</button>
+  $('#helpMenu').innerHTML = `<button data-update>↻ ${tr('Sök efter uppdateringar')}</button><hr><button data-help="">📖 ${tr('Hjälpcenter')}</button>
     ${hp ? `<button data-help="${hp.id}">📖 ${tr('Hjälp för den här sidan')} <small>${esc(hp.title)}</small></button>` : ''}
     <hr><button data-tour="intro">▶ ${tr('Kom igång')}</button>
     ${pt ? `<button data-tour="${pt.id}">▶ ${tr('Rundtur för den här sidan')} <small>${esc(pt.title)}</small></button>` : ''}
@@ -9926,6 +9991,7 @@ function renderHelpMenu() {
     ${all.filter(t => t.kind === 'new').map(t => `<button data-tour="${t.id}">${fresh.has(t.id) ? '<i class="new-dot"></i>' : ''}${esc(t.title)} <small>${fmtDayY(toDay(t.since))}</small></button>`).join('')}`;
   $$('#helpMenu [data-tour]').forEach(b => b.onclick = e => { e.stopPropagation(); startTour(b.dataset.tour); });
   $$('#helpMenu [data-help]').forEach(b => b.onclick = () => { closeMenu('#helpMenu'); openHelp(b.dataset.help); });
+  $('#helpMenu [data-update]').onclick = () => { closeMenu('#helpMenu'); void checkForUpdates(true); };
   $$('#helpMenu button').forEach(b => b.setAttribute('role', 'menuitem'));
 }
 // &tour=1 (Kom igång) eller &tour=<id> i länken startar en rundtur direkt
@@ -10109,6 +10175,7 @@ async function init() {
   render(true);
   if (FILE_MODE && plan && fileDirty.has(plan.id)) setSaveState(tr('● Ej sparad till fil'));
   initOnboarding();
+  if (FILE_MODE) setTimeout(() => { void checkForUpdates(); }, 3000);
 }
 
 function showBanner(msg) {
