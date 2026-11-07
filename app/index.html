@@ -1,0 +1,190 @@
+<script src="vendor/xlsx.full.min.js" data-embed="sheetjs"></script>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="5" width="10" height="3.2" rx="1.6" fill="currentColor"/><rect x="7" y="10.4" width="13" height="3.2" rx="1.6" fill="currentColor" opacity=".7"/><rect x="5" y="15.8" width="7" height="3.2" rx="1.6" fill="currentColor" opacity=".45"/></svg></div>
+      <span class="brand-name">NexusOrdo</span>
+    </div>
+    <div class="plan-picker">
+      <select id="planSelect" title="Välj plan" data-i18n-title="Välj plan"></select>
+      <button class="icon-btn" id="planMenuBtn" title="Hantera plan" data-i18n-title="Hantera plan" aria-haspopup="menu" aria-expanded="false" aria-controls="planMenu">⋯</button>
+      <!-- ⋯-menyn i grupper (#100): rubriken och avdelaren döljs när gruppen saknar synliga rader (syncMenuGroups) -->
+      <div class="menu plan-menu" id="planMenu" role="menu" aria-label="Hantera plan" data-i18n-aria="Hantera plan" hidden>
+        <div class="menu-grp" role="group" aria-labelledby="pmhNew">
+          <div class="menu-h" id="pmhNew" role="presentation" data-i18n="Ny">Ny</div>
+          <button role="menuitem" data-act="fileopen" class="file-only" data-i18n="📂 Öppna plan…">📂 Öppna plan…</button>
+          <button role="menuitem" data-act="filesave" class="file-only" data-i18n="💾 Spara">💾 Spara</button>
+          <button role="menuitem" data-act="filesaveas" class="file-only" data-i18n="Spara som…">Spara som…</button>
+          <label role="menuitem" tabindex="-1" for="fileInput" class="menu-item" data-act="import" data-i18n="⇪ Importera från Excel…">⇪ Importera från Excel…</label>
+          <button role="menuitem" data-act="new" data-i18n="Ny tom plan">Ny tom plan</button>
+          <button role="menuitem" data-act="tplnew" data-i18n="Ny plan från mall…">Ny plan från mall…</button>
+          <button role="menuitem" data-act="newprog" data-i18n="Nytt program…">Nytt program…</button>
+          <button role="menuitem" data-act="sample" data-i18n="Skapa exempelplan">Skapa exempelplan</button>
+        </div>
+        <div class="menu-grp" role="group" aria-labelledby="pmhPlan">
+          <hr role="separator">
+          <div class="menu-h" id="pmhPlan" role="presentation"><span class="no-prog" data-i18n="Den här planen">Den här planen</span><span class="prog-only" data-i18n="Det här programmet">Det här programmet</span></div>
+          <button role="menuitem" data-act="rename" data-i18n="Byt namn">Byt namn</button>
+          <button role="menuitem" data-act="project" class="no-prog" data-i18n="🏷 Projektuppgifter…">🏷 Projektuppgifter…</button>
+          <button role="menuitem" data-act="gates" class="no-prog" data-i18n="🚩 Gater…">🚩 Gater…</button>
+          <button role="menuitem" data-act="colors" class="no-prog" data-i18n="🎨 Färger…">🎨 Färger…</button>
+          <button role="menuitem" data-act="capacity" data-i18n="⏱ Kapacitet…">⏱ Kapacitet…</button>
+          <button role="menuitem" data-act="tpladd" class="no-prog" data-i18n="Lägg till från mall…">Lägg till från mall…</button>
+        </div>
+        <div class="menu-grp" role="group" aria-labelledby="pmhExport">
+          <hr role="separator">
+          <div class="menu-h" id="pmhExport" role="presentation" data-i18n="Exportera">Exportera</div>
+          <button role="menuitem" data-act="export" data-i18n="⬇ Exportera plan (Excel)…">⬇ Exportera plan (Excel)…</button>
+          <button role="menuitem" data-act="tplsave" class="no-prog" data-i18n="📐 Spara som mall…">📐 Spara som mall…</button>
+        </div>
+        <div class="menu-grp" role="group" aria-labelledby="pmhProg">
+          <hr role="separator">
+          <div class="menu-h" id="pmhProg" role="presentation" data-i18n="Program">Program</div>
+          <button role="menuitem" data-act="pgates" class="prog-only" data-i18n="🚩 Programgater…">🚩 Programgater…</button>
+        </div>
+        <div class="menu-grp" role="group" aria-labelledby="pmhHist">
+          <hr role="separator">
+          <div class="menu-h" id="pmhHist" role="presentation" data-i18n="Historik">Historik</div>
+          <button role="menuitem" data-act="baselines" class="no-prog" data-i18n="📏 Baslinjer…">📏 Baslinjer…</button>
+          <button role="menuitem" data-act="versions" data-i18n="🕘 Versioner…">🕘 Versioner…</button>
+          <button role="menuitem" data-act="trash" data-i18n="🗑 Papperskorg…">🗑 Papperskorg…</button>
+        </div>
+        <div class="menu-grp" role="group" aria-label="Ta bort plan" data-i18n-aria="Ta bort plan">
+          <hr role="separator">
+          <button role="menuitem" data-act="delete" class="danger" data-i18n="Ta bort plan">Ta bort plan</button>
+        </div>
+      </div>
+    </div>
+    <div class="seg" id="viewSeg">
+      <button data-v="gantt" class="on">Gantt</button>
+      <button data-v="roadmap">Roadmap</button>
+      <button data-v="load" title="Insats per person och vecka" data-i18n="Belastning" data-i18n-title="Insats per person och vecka">Belastning</button>
+    </div>
+    <div class="seg" id="pgSeg" style="display:none">
+      <button data-pg="cards" class="on" data-i18n="Översikt">Översikt</button>
+      <button data-pg="gantt">Gantt</button>
+      <button data-pg="gates" title="Projektens gater mot programgaterna" data-i18n="Gater" data-i18n-title="Projektens gater mot programgaterna">Gater</button>
+      <button data-pg="load" title="Insats per person och vecka i alla programmets planer" data-i18n="Belastning" data-i18n-title="Insats per person och vecka i alla programmets planer">Belastning</button>
+    </div>
+    <div class="spacer"></div>
+    <!-- Höger (#101): planens verktyg, sedan en tunn avdelare och de globala (? · språk · tema). Import finns i planväljaren och ⋯ → Ny -->
+    <span class="save-state" id="saveState"></span>
+    <!-- Uppföljning (#100): gate-checklista, risker, veckostatus, milstolpetrend och burndown; i programvyn bara burndown -->
+    <div class="fu-picker" id="fuWrap" hidden>
+      <button class="btn ghost" id="fuBtn" title="Följ upp planen: gate-checklista, risker, veckostatus, milstolpetrend och burndown" data-i18n-title="Följ upp planen: gate-checklista, risker, veckostatus, milstolpetrend och burndown" aria-haspopup="menu" aria-expanded="false" aria-controls="fuMenu">📊 <span class="lbl-txt" data-i18n="Uppföljning">Uppföljning</span> ▾</button>
+      <div class="menu fu-menu" id="fuMenu" role="menu" aria-label="Uppföljning" data-i18n-aria="Uppföljning" hidden>
+        <button role="menuitem" data-act="checklist" class="no-prog" data-i18n="☑ Gate-checklista…">☑ Gate-checklista…</button>
+        <button role="menuitem" data-act="risks" class="no-prog" data-i18n="⚠ Risklista…">⚠ Risklista…</button>
+        <button role="menuitem" data-act="status" class="no-prog" data-i18n="🚦 Veckostatus…">🚦 Veckostatus…</button>
+        <button role="menuitem" data-act="trend" class="no-prog" data-i18n="📈 Milstolpetrend…">📈 Milstolpetrend…</button>
+        <button role="menuitem" data-act="burndown" data-i18n="📉 Burndown…">📉 Burndown…</button>
+      </div>
+    </div>
+    <div class="upd-picker" id="updWrap" hidden>
+      <button class="btn ghost" id="updBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="updMenu" title="Uppdatera den öppna planen" data-i18n-title="Uppdatera den öppna planen" data-i18n="⟳ Uppdatera ▾">⟳ Uppdatera ▾</button>
+      <div class="menu upd-menu" id="updMenu" hidden>
+        <label for="updateInput" class="menu-item"><span data-i18n="Uppdatera från Excel…">Uppdatera från Excel…</span><small data-i18n="Jämför med planen och visar ändringarna – skapar ingen ny plan">Jämför med planen och visar ändringarna – skapar ingen ny plan</small></label>
+      </div>
+    </div>
+    <button class="btn ghost" id="exportBtn" data-i18n="Exportera bild">Exportera bild</button>
+    <button class="btn ghost" id="undoBtn" title="Ångra (Ctrl+Z)" data-i18n-title="Ångra (Ctrl+Z)" disabled>↶ <span class="lbl-txt" data-i18n="Ångra">Ångra</span></button>
+    <input type="file" id="updateInput" class="visually-hidden" accept=".xlsx,.xls,.csv">
+    <input type="file" id="fileInput" class="visually-hidden" accept=".xlsx,.xls,.csv">
+    <input type="file" id="openInput" class="visually-hidden" accept=".xlsx">
+    <input type="file" id="gchkFile" class="visually-hidden" accept=".xlsx,.xlsm">
+        <span class="tb-div" aria-hidden="true"></span>
+    <div class="help-picker">
+      <button class="icon-btn help-btn" id="helpBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="helpMenu" title="Hjälp och rundturer" data-i18n-title="Hjälp och rundturer">?</button>
+      <div class="menu help-menu" id="helpMenu" role="menu" aria-label="Hjälp och rundturer" data-i18n-aria="Hjälp och rundturer" hidden></div>
+    </div>
+    <div class="lang-picker">
+      <button class="icon-btn lang-btn" id="langBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu" title="Språk" data-i18n-title="Språk">SV ▾</button>
+      <div class="menu lang-menu" id="langMenu" role="menu" aria-label="Språk" data-i18n-aria="Språk" hidden>
+        <button role="menuitemradio" data-lang="sv" lang="sv" aria-checked="false">Svenska</button>
+        <button role="menuitemradio" data-lang="en" lang="en" aria-checked="false">English</button>
+      </div>
+    </div>
+    <button class="icon-btn" id="themeBtn" title="Byt tema" data-i18n-title="Byt tema">◐</button>
+  </header>
+
+  <div class="banner file-banner" id="fileBanner" hidden><span></span><button class="btn" id="fileBannerSave" data-i18n="💾 Spara till fil">💾 Spara till fil</button></div>
+  <div class="banner" id="banner" hidden><span></span><button class="icon-btn" onclick="this.parentElement.hidden = true" title="Stäng" data-i18n-title="Stäng">✕</button></div>
+
+  <section class="toolbar" id="toolbar">
+    <div class="kpis" id="kpis"></div>
+    <div class="spacer"></div>
+    <input type="search" id="search" placeholder="Sök aktivitet eller person…" data-i18n-placeholder="Sök aktivitet eller person…">
+    <label class="chk"><input type="checkbox" id="hideDone"> <span data-i18n="Dölj klara">Dölj klara</span></label>
+    <!-- Kritisk linje (#4): beräknas från beroenden och datum, inga datum ändras; målet = planens slut eller en gate -->
+    <label class="chk" id="critLbl" hidden title="Markera aktiviteterna som styr planens slut eller en vald gate – beräknas från beroenden, inga datum ändras" data-i18n-title="Markera aktiviteterna som styr planens slut eller en vald gate – beräknas från beroenden, inga datum ändras"><input type="checkbox" id="critOn"> <span data-i18n="Kritisk linje">Kritisk linje</span></label>
+    <select id="critTarget" class="crit-sel" hidden title="Mål för den kritiska linjen" data-i18n-title="Mål för den kritiska linjen" aria-label="Mål för den kritiska linjen" data-i18n-aria="Mål för den kritiska linjen"></select>
+    <!-- Baslinje (#5): vilken baslinje som jämförs i Gantt (val per användare) och hur många som är senare/tidigare -->
+    <select id="blSel" class="crit-sel" hidden title="Baslinje att jämföra planen med" data-i18n-title="Baslinje att jämföra planen med" aria-label="Baslinje att jämföra planen med" data-i18n-aria="Baslinje att jämföra planen med"></select>
+    <span class="bl-sum" id="blSum" role="status" hidden></span>
+    <label class="chk" id="onlyChkLbl" hidden title="Bara aktiviteter där alla punkter i checklistan är klara men aktiviteten inte är det" data-i18n-title="Bara aktiviteter där alla punkter i checklistan är klara men aktiviteten inte är det"><input type="checkbox" id="onlyChk"> <span data-i18n="☑ Checklista klar">☑ Checklista klar</span><span id="onlyChkN"></span></label>
+    <label class="chk" id="showHoursLbl" hidden title="Visa planerad insats i timmar i listan" data-i18n-title="Visa planerad insats i timmar i listan"><input type="checkbox" id="showHours"> <span data-i18n="Timmar">Timmar</span></label>
+    <label class="chk" id="onlyBlockedLbl" hidden><input type="checkbox" id="onlyBlocked"> <span data-i18n="Bara blockerade">Bara blockerade</span></label>
+    <button class="btn small chg-btn" id="pgSeenBtn" hidden></button>
+    <div class="seg small" id="zoomSeg">
+      <button data-z="week" data-i18n="Vecka">Vecka</button>
+      <button data-z="month" class="on" data-i18n="Månad">Månad</button>
+      <button data-z="quarter" data-i18n="Kvartal">Kvartal</button>
+    </div>
+    <div class="seg small" id="detailSeg" hidden>
+      <button data-d="tasks" class="on" data-i18n="Aktiviteter">Aktiviteter</button>
+      <button data-d="summary" data-i18n="Översikt">Översikt</button>
+    </div>
+    <button class="btn ghost small" id="todayBtn" data-i18n="Idag">Idag</button>
+    <button class="btn small" id="addBtn">+ Aktivitet</button>
+    <div class="crit-warn" id="critWarn" role="status" hidden></div>
+  </section>
+
+  <main id="main">
+    <div class="view" id="ganttView">
+      <div class="g-scroll" id="gScroll">
+        <div class="g-head">
+          <div class="g-lhead">
+            <div data-i18n="Aktivitet">Aktivitet</div><div data-i18n="Ansvarig">Ansvarig</div><div data-i18n="Start">Start</div><div data-i18n="Slut">Slut</div><div class="r" data-i18n="Klart">Klart</div><div class="r c-h" data-i18n="Timmar">Timmar</div>
+          </div>
+          <svg id="gHeadSvg"></svg>
+        </div>
+        <div class="g-body">
+          <div class="g-left" id="gLeft"></div>
+          <svg id="gBodySvg"></svg>
+        </div>
+      </div>
+    </div>
+    <div class="view" id="programView" hidden>
+      <div class="pg-wrap">
+        <div class="pg-head"><div><div class="pg-kicker" data-i18n="Program">Program</div><h2 id="pgName"></h2></div><div class="pg-sub" id="pgSub"></div></div>
+        <div class="pg-alert" id="pgAlert" hidden></div>
+        <div id="pgGates"></div>
+        <div class="pg-grid" id="pgGrid"></div>
+        <div class="pg-deps" id="pgDeps"></div>
+      </div>
+    </div>
+    <div class="view howto" id="howtoView" hidden></div>
+        <div class="view load" id="loadView" hidden></div>
+    <div class="view load gates" id="gatesView" hidden></div>
+    <div class="view" id="roadmapView" hidden>
+      <div class="rm-scroll" id="rmScroll"><svg id="rmSvg"></svg></div>
+    </div>
+    <div class="empty" id="empty" hidden>
+      <div class="empty-card">
+        <div class="empty-ico">⇪</div>
+        <h2 data-i18n="Skapa en tidplan från Planner">Skapa en tidplan från Planner</h2>
+        <p data-i18n-html="Exportera planen i Planner (<b>⋯ → Exportera plan till Excel</b>) och dra in filen här, eller välj den med knappen.">Exportera planen i Planner (<b>⋯ → Exportera plan till Excel</b>) och dra in filen här, eller välj den med knappen.</p>
+        <div class="empty-actions">
+          <label class="btn" id="emptyImport" for="fileInput" data-i18n="Välj Excel-fil">Välj Excel-fil</label>
+          <button class="btn ghost" id="emptySample" data-i18n="Visa exempelplan">Visa exempelplan</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="drawer" id="drawer" hidden></aside>
+  <div class="tooltip" id="tip" hidden></div>
+  <div class="drop" id="drop" hidden><div data-i18n="Släpp Planner-exporten här">Släpp Planner-exporten här</div></div>
+  <div class="modal-bg" id="modal" hidden></div>
+  <div class="toast" id="toast" hidden></div>
+</div>

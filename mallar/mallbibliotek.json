@@ -1,0 +1,588 @@
+{
+  "version": "2026-11-07 (PMI project template, Scrum, PI Planning (SAFe-inspired), hybrid PMI + sprints)",
+  "units": "weeks",
+  "source": {
+    "PMI": "PMBOK® Guide process groups and knowledge areas (Project Management Institute) – terms only, no text",
+    "Agile": "Scrum Guide 2020 (Schwaber & Sutherland, CC BY-SA 4.0) and SAFe-inspired PI terms – terms only, no text"
+  },
+  "positioning": "Items end endW weeks before the week of their gate (negative = after) and last durW weeks: start Monday, end Friday, never before the Monday after the previous gate. Milestones (durW 0) fall on Friday. \"at\" = [phase, share 0–1 of the phase between its start gate and closing gate].",
+  "phases": [
+    {
+      "name": "Initiating",
+      "gate": "G1",
+      "gateName": "Project charter approved"
+    },
+    {
+      "name": "Planning",
+      "gate": "G2",
+      "gateName": "Project management plan approved"
+    },
+    {
+      "name": "Executing",
+      "gate": "G3",
+      "gateName": "Deliverables accepted"
+    },
+    {
+      "name": "Closing",
+      "gate": "G4",
+      "gateName": "Project closed"
+    }
+  ],
+  "groups": [
+    {
+      "id": "pmi",
+      "name": "PMI project template",
+      "description": "A phase-gate project following the PMI process groups: Initiating, Planning, Executing (with Monitoring & Controlling running alongside) and Closing, with a gate after each phase.",
+      "source": "PMBOK® Guide process groups and knowledge areas (Project Management Institute) – terms only, no text",
+      "items": [
+        {
+          "name": "Business case and benefits",
+          "phase": "Initiating",
+          "gate": "G1",
+          "endW": 2,
+          "durW": 2,
+          "order": 1
+        },
+        {
+          "name": "Identify stakeholders",
+          "phase": "Initiating",
+          "gate": "G1",
+          "endW": 1,
+          "durW": 2,
+          "order": 2
+        },
+        {
+          "name": "Develop project charter",
+          "phase": "Initiating",
+          "gate": "G1",
+          "endW": 0,
+          "durW": 2,
+          "order": 3,
+          "after": [
+            "Business case and benefits"
+          ]
+        },
+        {
+          "name": "Collect requirements",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 5,
+          "durW": 2,
+          "order": 4
+        },
+        {
+          "name": "Define scope",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 4,
+          "durW": 1,
+          "order": 5,
+          "after": [
+            "Collect requirements"
+          ]
+        },
+        {
+          "name": "Create WBS",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 3,
+          "durW": 1,
+          "order": 6,
+          "after": [
+            "Define scope"
+          ]
+        },
+        {
+          "name": "Develop schedule",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 2,
+          "order": 7,
+          "after": [
+            "Create WBS"
+          ]
+        },
+        {
+          "name": "Estimate costs and determine budget",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 2,
+          "order": 8,
+          "after": [
+            "Create WBS"
+          ]
+        },
+        {
+          "name": "Plan quality management",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 1,
+          "order": 9
+        },
+        {
+          "name": "Plan resource management",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 1,
+          "order": 10
+        },
+        {
+          "name": "Plan communications management",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 1,
+          "order": 11
+        },
+        {
+          "name": "Identify risks and plan responses",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 2,
+          "order": 12
+        },
+        {
+          "name": "Plan procurement management",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 1,
+          "order": 13
+        },
+        {
+          "name": "Plan stakeholder engagement",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 1,
+          "durW": 1,
+          "order": 14
+        },
+        {
+          "name": "Develop project management plan",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 0,
+          "durW": 1,
+          "order": 15,
+          "after": [
+            "Develop schedule",
+            "Estimate costs and determine budget",
+            "Identify risks and plan responses"
+          ]
+        },
+        {
+          "name": "Acquire and develop team",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 0,
+          "durW": 4,
+          "order": 16,
+          "at": [
+            "Executing",
+            0.2
+          ]
+        },
+        {
+          "name": "Conduct procurements",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 0,
+          "durW": 4,
+          "order": 17,
+          "at": [
+            "Executing",
+            0.3
+          ]
+        },
+        {
+          "name": "Direct and manage project work",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 18
+        },
+        {
+          "name": "Manage quality",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 19
+        },
+        {
+          "name": "Manage communications and stakeholder engagement",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 20
+        },
+        {
+          "name": "Monitor and control project work (status reports)",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 21
+        },
+        {
+          "name": "Perform integrated change control",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 22
+        },
+        {
+          "name": "Control scope, schedule and costs",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 23
+        },
+        {
+          "name": "Monitor risks",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 1,
+          "durW": 26,
+          "order": 24
+        },
+        {
+          "name": "Validate scope (deliverables accepted)",
+          "phase": "Executing",
+          "gate": "G3",
+          "endW": 0,
+          "durW": 2,
+          "order": 25,
+          "after": [
+            "Direct and manage project work"
+          ]
+        },
+        {
+          "name": "Hand over deliverables",
+          "phase": "Closing",
+          "gate": "G4",
+          "endW": 2,
+          "durW": 2,
+          "order": 26
+        },
+        {
+          "name": "Close procurements",
+          "phase": "Closing",
+          "gate": "G4",
+          "endW": 1,
+          "durW": 2,
+          "order": 27
+        },
+        {
+          "name": "Lessons learned",
+          "phase": "Closing",
+          "gate": "G4",
+          "endW": 1,
+          "durW": 1,
+          "order": 28
+        },
+        {
+          "name": "Release resources",
+          "phase": "Closing",
+          "gate": "G4",
+          "endW": 0,
+          "durW": 1,
+          "order": 29
+        },
+        {
+          "name": "Final report and archive",
+          "phase": "Closing",
+          "gate": "G4",
+          "endW": 0,
+          "durW": 1,
+          "order": 30,
+          "after": [
+            "Lessons learned"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scrum",
+      "name": "Scrum",
+      "agile": true,
+      "anchor": "START",
+      "description": "Sprint 0 (set-up), then N sprints with Sprint Planning, Sprint Review and Sprint Retrospective (the Daily Scrum is not shown in the timeline). A release every X sprints and the Product Goal as a gate. The sprint content can be kept as a checklist on Sprint Backlog.",
+      "source": "Scrum Guide 2020 (Schwaber & Sutherland, CC BY-SA 4.0) – terms only, no text",
+      "phases": [
+        {
+          "name": "Sprint 0"
+        },
+        {
+          "name": "Sprint {n}",
+          "repeat": true
+        },
+        {
+          "name": "Releases"
+        }
+      ],
+      "items": [
+        {
+          "name": "Product Backlog",
+          "phase": "Sprint 0",
+          "anchor": "START",
+          "endW": 0,
+          "durW": 1,
+          "order": 1
+        },
+        {
+          "name": "Definition of Done",
+          "phase": "Sprint 0",
+          "anchor": "START",
+          "endW": 0,
+          "durW": 0,
+          "milestone": true,
+          "order": 2,
+          "after": [
+            "Product Backlog"
+          ]
+        },
+        {
+          "name": "Product Goal",
+          "phase": "Releases",
+          "anchor": "END",
+          "endW": 0,
+          "durW": 0,
+          "milestone": true,
+          "gateMs": true,
+          "order": 3,
+          "after": [
+            "last:Sprint Review"
+          ]
+        }
+      ],
+      "repeat": {
+        "name": "Sprint {n}",
+        "unit": "sprint",
+        "count": 6,
+        "countMin": 1,
+        "countMax": 26,
+        "lenW": 2,
+        "lenMin": 1,
+        "lenMax": 4,
+        "startW": 1,
+        "startAfter": [
+          "Definition of Done"
+        ],
+        "tasks": [
+          {
+            "name": "Sprint Planning",
+            "milestone": true,
+            "at": "start",
+            "after": [
+              "prev:Sprint Retrospective"
+            ]
+          },
+          {
+            "name": "Sprint Backlog",
+            "after": [
+              "prev:Sprint Retrospective"
+            ]
+          },
+          {
+            "name": "Sprint Review",
+            "milestone": true,
+            "after": [
+              "Sprint Backlog"
+            ]
+          },
+          {
+            "name": "Sprint Retrospective",
+            "milestone": true,
+            "after": [
+              "Sprint Review"
+            ]
+          }
+        ],
+        "release": {
+          "every": 3,
+          "name": "Release {r}",
+          "phase": "Releases",
+          "last": true,
+          "after": "Sprint Review"
+        }
+      }
+    },
+    {
+      "id": "pi",
+      "name": "PI Planning (SAFe-inspired)",
+      "agile": true,
+      "anchor": "START",
+      "description": "N Program Increments (PI) of 8–12 weeks: PI Planning, Iterations 1–4 and an IP Iteration (Innovation and Planning), System Demo and Inspect & Adapt. One plan per team; the teams meet in the program view.",
+      "source": "SAFe-inspired: PI terms only, no text – not an official template from Scaled Agile, Inc.",
+      "phases": [
+        {
+          "name": "PI {n}",
+          "repeat": true
+        }
+      ],
+      "items": [],
+      "repeat": {
+        "name": "PI {n}",
+        "unit": "PI",
+        "count": 4,
+        "countMin": 1,
+        "countMax": 8,
+        "lenW": 10,
+        "lenMin": 8,
+        "lenMax": 12,
+        "startW": 0,
+        "tasks": [
+          {
+            "name": "PI Planning",
+            "milestone": true,
+            "at": "start",
+            "after": [
+              "prev:Inspect & Adapt"
+            ]
+          },
+          {
+            "name": "Iteration 1",
+            "part": [
+              1,
+              5
+            ],
+            "after": [
+              "prev:Inspect & Adapt"
+            ]
+          },
+          {
+            "name": "Iteration 2",
+            "part": [
+              2,
+              5
+            ],
+            "after": [
+              "Iteration 1"
+            ]
+          },
+          {
+            "name": "Iteration 3",
+            "part": [
+              3,
+              5
+            ],
+            "after": [
+              "Iteration 2"
+            ]
+          },
+          {
+            "name": "Iteration 4",
+            "part": [
+              4,
+              5
+            ],
+            "after": [
+              "Iteration 3"
+            ]
+          },
+          {
+            "name": "System Demo",
+            "milestone": true,
+            "part": [
+              4,
+              5
+            ],
+            "after": [
+              "Iteration 4"
+            ]
+          },
+          {
+            "name": "IP Iteration",
+            "part": [
+              5,
+              5
+            ],
+            "after": [
+              "Iteration 4"
+            ]
+          },
+          {
+            "name": "Inspect & Adapt",
+            "milestone": true,
+            "part": [
+              5,
+              5
+            ],
+            "after": [
+              "IP Iteration"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "hybrid",
+      "name": "Hybrid PMI + sprints",
+      "agile": true,
+      "description": "PMI phases and gates with N sprints in Executing. Each sprint starts the Monday after the gate that starts the phase, follows the previous sprint and ends before the closing gate (sprints that do not fit are left out).",
+      "source": "Scrum Guide 2020 (Schwaber & Sutherland, CC BY-SA 4.0) – terms only, no text; PMI gates as in the PMI project template",
+      "items": [
+        {
+          "name": "Product Backlog",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 0,
+          "durW": 3,
+          "order": 1
+        },
+        {
+          "name": "Definition of Done",
+          "phase": "Planning",
+          "gate": "G2",
+          "endW": 0,
+          "durW": 0,
+          "order": 2,
+          "milestone": true,
+          "after": [
+            "Product Backlog"
+          ]
+        }
+      ],
+      "repeat": {
+        "name": "Sprint {n}",
+        "unit": "sprint",
+        "within": [
+          "Executing"
+        ],
+        "count": 6,
+        "countMin": 1,
+        "countMax": 26,
+        "lenW": 3,
+        "lenMin": 1,
+        "lenMax": 4,
+        "startW": 0,
+        "tasks": [
+          {
+            "name": "Sprint {n}",
+            "after": [
+              "prev:Sprint {n} Review"
+            ]
+          },
+          {
+            "name": "Sprint {n} Review",
+            "milestone": true,
+            "after": [
+              "Sprint {n}"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "repeat": "Agile templates: \"repeat\" = a block repeated N times (count, lenW in weeks, chosen when the plan is created within countMin–countMax and lenMin–lenMax). Each repetition is its own phase (\"Sprint {n}\"), or with \"within\" N sprints inside each listed phase. Tasks: part [k, n] = k-th of n equal parts (whole weeks), milestones at the end (Friday) or at:\"start\" (Monday); after: name in the same repetition or prev:name. Anchor END = Friday of the last repetition."
+}

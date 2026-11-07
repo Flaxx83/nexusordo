@@ -1,0 +1,59 @@
+/* Glastema – bara demo (#72). Läggs till av scripts/build-lokal.mjs --tema glas, efter style.css.
+   Glas bara på ytor ovanpå innehållet; Gantt, staplar och fasfärger (main) förblir heltäckande (kontrast #34). */
+:root { --glass-tint: rgba(255,255,255,.52); --glass-edge: rgba(255,255,255,.75); --glass-shade: 0 8px 32px rgba(30,40,80,.16); --glass-blur: blur(18px) saturate(1.6); }
+:root[data-theme="dark"] { --glass-tint: rgba(28,30,40,.55); --glass-edge: rgba(255,255,255,.14); --glass-shade: 0 8px 32px rgba(0,0,0,.45); }
+
+body.theme-glas {
+  background:
+    radial-gradient(40vw 40vw at 8% 12%, rgba(120,140,255,.55), transparent 70%),
+    radial-gradient(38vw 38vw at 92% 8%, rgba(255,150,190,.45), transparent 70%),
+    radial-gradient(45vw 45vw at 80% 95%, rgba(90,210,190,.45), transparent 70%),
+    radial-gradient(35vw 35vw at 15% 90%, rgba(255,200,110,.40), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+}
+:root[data-theme="dark"] body.theme-glas { background-color: #0d0f16; }
+
+/* Glasytor */
+body.theme-glas .topbar,
+body.theme-glas .kpi,
+body.theme-glas .seg,
+body.theme-glas .menu,
+body.theme-glas .modal,
+body.theme-glas .drawer,
+body.theme-glas .tour-pop,
+body.theme-glas .toast {
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shade), inset 0 1px 0 var(--glass-edge);
+}
+body.theme-glas .topbar { margin: 10px 16px 0; border-radius: 16px; }
+/* backdrop-filter skapar en egen stapling – toppmenyn (med sina rullgardinsmenyer) måste ligga över verktygsfältet */
+body.theme-glas .topbar { position: relative; z-index: 60; }
+body.theme-glas .drawer { z-index: 70; }
+/* Panel och dialoger med mycket text: tätare glas så att texten går att läsa */
+body.theme-glas .drawer, body.theme-glas .modal, body.theme-glas .menu { background: color-mix(in srgb, var(--panel) 82%, transparent); }
+body.theme-glas .kpi { border-radius: 14px; }
+body.theme-glas .seg button.on { background: rgba(255,255,255,.7); }
+:root[data-theme="dark"] body.theme-glas .seg button.on { background: rgba(255,255,255,.14); }
+body.theme-glas .modal-bg { background: rgba(20,24,40,.22); }
+body.theme-glas .drawer { margin: 10px; border-radius: 18px; bottom: 0; top: 0; height: auto; }
+
+/* Liquid glass (Chromium): glas.js lägger på SVG-filtret när webbläsaren klarar det */
+body.theme-glas.lg-on .topbar,
+body.theme-glas.lg-on .menu,
+body.theme-glas.lg-on .modal,
+body.theme-glas.lg-on .tour-pop { -webkit-backdrop-filter: none; backdrop-filter: var(--lg-filter, var(--glass-blur)); }
+
+/* Innehållet förblir läsbart */
+body.theme-glas main { background: var(--surface); }
+
+/* Märkning */
+.glas-badge { margin-left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  background: linear-gradient(90deg, rgba(120,140,255,.35), rgba(255,150,190,.35)); border: 1px solid var(--glass-edge); white-space: nowrap; }
+
+@media (prefers-reduced-transparency: reduce) {
+  body.theme-glas .topbar, body.theme-glas .kpi, body.theme-glas .seg, body.theme-glas .menu, body.theme-glas .modal,
+  body.theme-glas .drawer, body.theme-glas .tour-pop, body.theme-glas .toast { background: var(--panel); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

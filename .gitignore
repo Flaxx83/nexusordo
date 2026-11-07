@@ -1,0 +1,21 @@
+.claude/
+*.png
+*.PNG
+*.snagx
+node_modules/
+
+# How to-bilderna (påhittade testplaner) ska versionshanteras (#47)
+!app/howto/**/*.png
+
+# Byggs med scripts/build-lokal.mjs
+dist/
+
+# Lokala inställningar och hemligheter
+.env
+.env.*
+!.env.example
+
+# Loggar och operativsystem
+*.log
+.DS_Store
+Thumbs.db
